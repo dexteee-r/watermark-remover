@@ -1,0 +1,21 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Install dependencies
+        run: rtk cargo fetch
+      - name: Build
+        run: rtk cargo build --release
+      - name: Test
+        run: rtk cargo test
+      - name: Benchmark
+        run: ./benchmark.sh
